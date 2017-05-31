@@ -26,10 +26,13 @@ library(rJava)
 library(xlsx)
 
 # Read data
-setwd(paste(datDir,"/news",sep=""))
+setwd(paste(datDir,"/pa",sep=""))
 
-base <- read.xlsx("top-300-connect.xlsx",1,as.data.frame=TRUE, 
-                  header=T, stringsAsFactors=FALSE, encoding="UTF-8")
+base <- read.csv('base.txt',header=TRUE, sep='\t', quote = "\'")
+base_top_300 <- read.csv('top-300.txt',header=TRUE, sep='\t', quote = "\'")
+
+
+
 
 q1 <- read.xlsx("2016-Q1.xlsx",1,as.data.frame=TRUE, 
                 header=T, stringsAsFactors=FALSE, encoding="UTF-8")
