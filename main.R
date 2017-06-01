@@ -33,7 +33,7 @@ pie(table(rdata$success))
 
 
 # Multiple Linear Regression Example 
-reg <- lm(koeff_otcenki ~ max_razryad_za_period + vozrast + koeff_rascheta_premii +kolvo_obrazovanii
+reg <- lm(koeff_otcenki ~ max_razryad_za_period + vozrast + kolvo_obrazovanii
           + kolvo_detei + let_posle_vyza + koeff_otrab_vremeni
           , data=rdata)
 summary(reg) # show results
@@ -63,8 +63,9 @@ data.target.split.evaluate <- data.target.split[(floor(nrow(data.target.split)*.
 library(rpart)
 
 # Rpart
-data.target.split.rpart <- rpart(data.target.split.train$success ~ max_razryad_za_period + vozrast + koeff_rascheta_premii +kolvo_obrazovanii
-                                 + kolvo_detei + let_posle_vyza + koeff_otrab_vremeni
+data.target.split.rpart <- rpart(data.target.split.train$success ~ max_razryad_za_period + vozrast + kolvo_obrazovanii
+                                 + kolvo_detei + let_posle_vyza + koeff_otrab_vremeni + pol + grade + status_na_mom_voznagrazdeniya
+                                 + ychen_stepen 
                                  , data = data.target.split.train, method = "class", cp = 0.011, na.action = na.rpart)
 
 summary(data.target.split.rpart)
