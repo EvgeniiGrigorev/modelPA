@@ -33,7 +33,9 @@ pie(table(rdata$success))
 
 
 # Multiple Linear Regression Example 
-reg <- lm(koeff_otcenki ~ max_razryad_za_period + vozrast + koeff_rascheta_premii +kolvo_obrazovanii, data=rdata)
+reg <- lm(koeff_otcenki ~ max_razryad_za_period + vozrast + koeff_rascheta_premii +kolvo_obrazovanii
+          + kolvo_detei + let_posle_vyza + koeff_otrab_vremeni
+          , data=rdata)
 summary(reg) # show results
 
 
@@ -61,7 +63,9 @@ data.target.split.evaluate <- data.target.split[(floor(nrow(data.target.split)*.
 library(rpart)
 
 # Rpart
-data.target.split.rpart <- rpart(data.target.split.train$success ~ max_razryad_za_period + vozrast + koeff_rascheta_premii +kolvo_obrazovanii, data = data.target.split.train, method = "class", cp = 0.011, na.action = na.rpart)
+data.target.split.rpart <- rpart(data.target.split.train$success ~ max_razryad_za_period + vozrast + koeff_rascheta_premii +kolvo_obrazovanii
+                                 + kolvo_detei + let_posle_vyza + koeff_otrab_vremeni
+                                 , data = data.target.split.train, method = "class", cp = 0.011, na.action = na.rpart)
 
 summary(data.target.split.rpart)
 
@@ -75,7 +79,7 @@ text(data.target.split.rpart,use.n = TRUE, cex = 0.75)
 # printcp(data.target.split.rpart)
 
 # Use the model R-part to predict the evaluation.
-data.target.split.evaluate <- data.target.split
+# data.target.split.evaluate <- data.target.split
 data.target.split.evaluate$prediction <- predict(data.target.split.rpart, newdata=data.target.split.evaluate, type="class")
 summary(data.target.split.evaluate$prediction)
 
