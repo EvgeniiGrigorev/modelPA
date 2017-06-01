@@ -34,16 +34,29 @@ pie(table(rdata$success))
 
 # Multiple Linear Regression Example 
 reg <- lm(koeff_otcenki ~ max_razryad_za_period + vozrast + kolvo_obrazovanii
-          + kolvo_detei + let_posle_vyza + koeff_otrab_vremeni
+          + kolvo_detei + let_posle_vyza + koeff_otrab_vremeni + pol + grade + status_na_mom_voznagrazdeniya
+          + ychen_stepen
           , data=rdata)
 summary(reg) # show results
 
+
+# diagnostic plots 
+layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
+plot(reg)
+
+# abline(lm(koeff_otcenki ~ max_razryad_za_period , data=rdata))
+
+# # K-fold cross-validation
+# library(DAAG)
+# cv.lm(df=rdata, reg, m=3) # 3 fold cross-validation
 
 
 #График зависимости "переменных / факторов"
 # pairs(rdata[11:20],main="Main Data", pch=19, col=as.numeric(rdata$success)+1)
 pairs(rdata[6:10],main="Main Data", pch=19, col=as.numeric(rdata$success)+1)
 pairs(rdata[10:14],main="Main Data", pch=19, col=as.numeric(rdata$success)+1)
+pairs(rdata[14:17],main="Main Data", pch=19, col=as.numeric(rdata$success)+1)
+
 
 coefficients(reg) # model coefficients
 confint(reg, level=0.95) # CIs for model parameters 
@@ -98,6 +111,18 @@ data.target.split.evaluate$correct <- data.target.split.evaluate$prediction == d
 print(paste("% of predicted classifications correct", 100*mean(data.target.split.evaluate$correct)))
 table(data.target.split.evaluate$prediction, data.target.split.evaluate$success)
 
+
+
+library(randomForest)
+data.target.split.rforest <- randomForest(data.target.split.train$success ~ 
+                                            max_razryad_za_period + vozrast + kolvo_obrazovanii
+                                          + kolvo_detei + let_posle_vyza + koeff_otrab_vremeni + pol + grade + status_na_mom_voznagrazdeniya
+                                          + ychen_stepen, 
+                                          data = data.target.split.train , na.action=na.omit)
+
+print(data.target.split.rforest) # view results 
+importance(data.target.split.rforest) # importance of each predictor
+plot(data.target.split.rforest)
 
 # Если в модели оставить только тех, кого предсказывает, как успешные "1", тогда точность модели составит ~80%
 # accurasy <- sqldf("SELECT count(tabelnyi), success,prediction from che t group by success,prediction")
