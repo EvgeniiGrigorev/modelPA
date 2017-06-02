@@ -14,9 +14,14 @@ base <- read.csv('base-02-06-2017.txt',header=TRUE, sep='\t', quote = "\'")
 summary(base$koeff_otsenki)
 plot(base$koeff_otsenki)
 
+
 # Фильтруем по показателям, которые доступны
 rdata <- base[which(base$koeff_otsenki != 'NaN'),]
 summary(rdata$koeff_otsenki)
+
+par(mfrow=c(1, 2))
+hist(rdata$koeff_otsenki, freq=T, breaks=0:7, right=F, col="seagreen", main="Гистограмма", xlab="Коэфф. оценки", ylab="Число Data-Point")
+plot(density(rdata$koeff_otsenki), type="l", col="seagreen", lwd=2, main="Сглаженная плотность Коэфф. Оценки")
 
 med <- median(rdata$koeff_otsenki)
 
